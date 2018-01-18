@@ -8,7 +8,7 @@ public Plugin myinfo =
 	name = "BLUCrits", 
 	author = "x3Karma", 
 	description = "Grant critcals to BLU players correctly.", 
-	version = "1.0", 
+	version = "1.1", 
 	url = "https://titan.tf"
 };
 
@@ -34,21 +34,20 @@ public Action ClientTimer(Handle timer)
 			
 			new TFCond:cond = TFCond_HalloweenCritCandy;
 			new bool:addthecrit = false;
-			new bool:addminicrit = false;
 			if (GetClientTeam(client) == view_as<int>(TFTeam_Blue)) {
 				if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Melee))
 				{
 					addthecrit = true;
-				} else {
-					addminicrit = true;
+				} else if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary)) {
+					addthecrit = true;
+					cond = TFCond_Buffed;
+				} else if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary)) {
+					addthecrit = true;
 					cond = TFCond_Buffed;
 				}
 			}
 			if (addthecrit) {
 				TF2_AddCondition(client, cond, 0.3);
-			} else if (addminicrit) {
-				if (cond != TFCond_Buffed)
-					TF2_AddCondition(client, TFCond_Buffed, 0.3);
 			}
 		}
 	}
