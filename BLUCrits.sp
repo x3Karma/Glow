@@ -30,8 +30,8 @@ public Action ClientTimer(Handle timer)
 		{
 			new weapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if (weapon <= MaxClients || !IsValidEntity(weapon) || !GetEntityClassname(weapon, wepclassname, sizeof(wepclassname)))strcopy(wepclassname, sizeof(wepclassname), "");
-			new bool:validwep = (strncmp(wepclassname, "tf_wea", 6, false) == 0);			new index = (validwep ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-
+			new bool:validwep = (strncmp(wepclassname, "tf_wea", 6, false) == 0); new index = (validwep ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
+			
 			new TFCond:cond = TFCond_HalloweenCritCandy;
 			new bool:addthecrit = false;
 			new bool:addminicrit = false;
@@ -46,7 +46,9 @@ public Action ClientTimer(Handle timer)
 			}
 			if (addthecrit) {
 				TF2_AddCondition(client, cond, 0.3);
-				if (addminicrit && cond != TFCond_Buffed)TF2_AddCondition(client, TFCond_Buffed, 0.3);
+			} else if (addminicrit) {
+				if (cond != TFCond_Buffed)
+					TF2_AddCondition(client, TFCond_Buffed, 0.3);
 			}
 		}
 	}
