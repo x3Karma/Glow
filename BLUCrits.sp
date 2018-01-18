@@ -29,19 +29,21 @@ public Action ClientTimer(Handle timer)
 		for (new client = 1; client <= MaxClients; client++)
 		{
 			new weapon = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
-			if (weapon <= MaxClients || !IsValidEntity(weapon) || !GetEntityClassname(weapon, wepclassname, sizeof(wepclassname)))strcopy(wepclassname, sizeof(wepclassname), "");
-			new bool:validwep = (strncmp(wepclassname, "tf_wea", 6, false) == 0); new index = (validwep ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-			
+			if (weapon <= MaxClients || !IsValidEntity(weapon) || !GetEntityClassname(weapon, wepclassname, sizeof(wepclassname)))
+				strcopy(wepclassname, sizeof(wepclassname), "");
+			new bool:validwep = (strncmp(wepclassname, "tf_wea", 6, false) == 0);
 			new TFCond:cond = TFCond_HalloweenCritCandy;
 			new bool:addthecrit = false;
 			if (GetClientTeam(client) == view_as<int>(TFTeam_Blue)) {
 				if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Melee))
 				{
 					addthecrit = true;
-				} else if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary)) {
+				}
+				if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary)) {
 					addthecrit = true;
 					cond = TFCond_Buffed;
-				} else if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary)) {
+				}
+				if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary)) {
 					addthecrit = true;
 					cond = TFCond_Buffed;
 				}
