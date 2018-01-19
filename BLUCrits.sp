@@ -12,14 +12,35 @@ public Plugin myinfo =
 	url = "https://titan.tf"
 };
 
+new Handle:g_CTimer;
+
 public void OnPluginStart()
 {
 	HookEvent("teamplay_round_start", Event_RoundStart);
+	RegAdminCmd("critzreload", Command_Reload, ADMFLAG_SLAY, "Reload crits for Guards.");
 }
 
 public Action Event_RoundStart(Handle hEvent, const char[] sName, bool bDontBroadcast)
 {
-	CreateTimer(0.2, ClientTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	g_CTimer = CreateTimer(0.2, ClientTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
+
+stock ClearTimer(&Handle:hTimer)
+{
+    if (hTimer != INVALID_HANDLE)
+    {
+        KillTimer(hTimer);
+        hTimer = INVALID_HANDLE;
+    }
+}
+
+public Action Command_Reload(int client, int args)
+{
+	ClearTimer(g_CTimer);
+	g_CTimer = CreateTimer(0.2, ClientTimer, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+	
+	PrintToChat(client, "[SM] Crits reloaded.");
+	return Plugin_Handled;
 }
 
 public Action ClientTimer(Handle timer)
