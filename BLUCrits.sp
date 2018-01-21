@@ -12,6 +12,7 @@ public Plugin myinfo =
 	url = "https://titan.tf"
 };
 
+new BlueTeam = 3;
 new Handle:g_CTimer;
 
 public void OnPluginStart()
@@ -55,7 +56,7 @@ public Action ClientTimer(Handle timer)
 			new bool:validwep = (strncmp(wepclassname, "tf_wea", 6, false) == 0);
 			new TFCond:cond = TFCond_HalloweenCritCandy;
 			new bool:addthecrit = false;
-			if (GetClientTeam(client) == view_as<int>(TFTeam_Blue)) {
+			if (GetEntityTeamNum(client) == BlueTeam) {
 				if (validwep && weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Melee))
 				{
 					addthecrit = true;
@@ -75,4 +76,9 @@ public Action ClientTimer(Handle timer)
 		}
 	}
 	return Plugin_Continue;
+}
+
+stock GetEntityTeamNum(iEnt)
+{
+    return GetEntProp(iEnt, Prop_Send, "m_iTeamNum");
 }
